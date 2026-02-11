@@ -68,13 +68,14 @@ positionNoButton();
 const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
 if (isTouchDevice) {
-  noBtn.addEventListener("click", (e) => {
+  noBtn.addEventListener("touchstart", (e) => {
     e.preventDefault();
     moveNoButton();
   });
 } else {
   noBtn.addEventListener("mouseenter", moveNoButton);
 }
+
 yesBtn.addEventListener("click", () => {
   gameContainer.classList.add("hidden");
   successScreen.classList.remove("hidden");
