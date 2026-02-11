@@ -5,6 +5,7 @@ const successScreen = document.querySelector("#success-screen");
 const backgroundContainer = document.querySelector("#background-gifs");
 
 let currentScale = 1;
+let isMoving = false;
 
 const allGifs = [
   "assets/cat-kitty.gif",
@@ -38,7 +39,10 @@ function positionNoButton() {
   noBtn.style.top = `${yesRect.top}px`;
 }
 
-function moveNoButton() {
+function moveNoButton(e) {
+  if (isMoving) return;
+  isMoving = true;
+
   const padding = 20;
 
   const viewportWidth = window.innerWidth;
@@ -57,16 +61,27 @@ function moveNoButton() {
 
   noBtn.style.left = `${randomX}px`;
   noBtn.style.top = `${randomY}px`;
+
   currentScale += 0.15;
   yesBtn.style.transform = `scale(${currentScale})`;
   yesBtn.style.transition = "transform 0.3s ease";
+
+  setTimeout(() => {
+    isMoving = false;
+  }, 250);
 }
 
 positionNoButton();
+
 noBtn.addEventListener("mouseover", moveNoButton);
+
+noBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  moveNoButton(e);
+});
+
 noBtn.addEventListener("touchstart", (e) => {
   e.preventDefault();
-  moveNoButton();
 });
 
 yesBtn.addEventListener("click", () => {
