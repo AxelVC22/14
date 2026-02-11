@@ -5,7 +5,6 @@ const successScreen = document.querySelector("#success-screen");
 const backgroundContainer = document.querySelector("#background-gifs");
 
 let currentScale = 1;
-let isMoving = false;
 
 const allGifs = [
   "assets/cat-kitty.gif",
@@ -39,10 +38,7 @@ function positionNoButton() {
   noBtn.style.top = `${yesRect.top}px`;
 }
 
-function moveNoButton(e) {
-  if (isMoving) return;
-  isMoving = true;
-
+function moveNoButton() {
   const padding = 20;
 
   const viewportWidth = window.innerWidth;
@@ -65,25 +61,20 @@ function moveNoButton(e) {
   currentScale += 0.15;
   yesBtn.style.transform = `scale(${currentScale})`;
   yesBtn.style.transition = "transform 0.3s ease";
-
-  setTimeout(() => {
-    isMoving = false;
-  }, 250);
 }
 
 positionNoButton();
 
-noBtn.addEventListener("mouseover", moveNoButton);
+const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
-noBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  moveNoButton(e);
-});
-
-noBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-});
-
+if (isTouchDevice) {
+  noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    moveNoButton();
+  });
+} else {
+  noBtn.addEventListener("mouseenter", moveNoButton);
+}
 yesBtn.addEventListener("click", () => {
   gameContainer.classList.add("hidden");
   successScreen.classList.remove("hidden");
